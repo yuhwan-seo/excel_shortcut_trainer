@@ -1,0 +1,668 @@
+
+:root {
+  --bg: #f5f7fb;
+  --panel: #ffffff;
+  --text: #18212f;
+  --muted: #667085;
+  --line: #dce3ec;
+  --accent: #217346;
+  --accent-soft: #e8f3ed;
+  --ok: #137333;
+  --ok-bg: #e6f4ea;
+  --bad: #b3261e;
+  --bad-bg: #fce8e6;
+  --warn: #8a5a00;
+  --warn-bg: #fff4d6;
+  --shadow: 0 10px 28px rgba(31, 41, 55, .08);
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", "Yu Gothic UI", "Meiryo", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+button { font: inherit; cursor: pointer; }
+.topbar {
+  background: var(--panel);
+  border-bottom: 1px solid var(--line);
+  padding: 18px 28px;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+.topbar h1 { margin: 0; font-size: 24px; }
+.topbar p { margin: 5px 0 0; color: var(--muted); }
+.layout {
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 24px;
+  display: grid;
+  grid-template-columns: 290px minmax(0, 1fr);
+  gap: 24px;
+}
+.sidebar { min-width: 0; }
+.progress-card, .trainer-card, .reference {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+}
+.progress-card { padding: 18px; margin-bottom: 16px; }
+.progress-row { display:flex; justify-content:space-between; margin-bottom:10px; }
+.progress-track { height: 9px; border-radius:999px; background:#edf0f4; overflow:hidden; }
+.progress-bar { height:100%; width:0; background:var(--accent); transition:width .25s ease; }
+.stats { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:16px; text-align:center; }
+.stats div { background:#f8fafc; border-radius:10px; padding:10px 5px; }
+.stats strong, .stats span { display:block; }
+.stats strong { font-size:18px; }
+.stats span { color:var(--muted); font-size:12px; margin-top:2px; }
+
+.lesson-list { display:grid; gap:10px; }
+.lesson-btn {
+  border:1px solid var(--line);
+  background:var(--panel);
+  padding:14px;
+  border-radius:12px;
+  text-align:left;
+  display:grid;
+  grid-template-columns:34px 1fr auto;
+  gap:10px;
+  align-items:center;
+}
+.lesson-btn:hover { border-color:#aeb8c6; }
+.lesson-btn.active { border-color:var(--accent); background:var(--accent-soft); }
+.lesson-btn.locked { opacity:.55; cursor:not-allowed; }
+.lesson-index {
+  width:32px;height:32px;border-radius:50%;
+  background:#eef2f6; display:grid; place-items:center; font-weight:700;
+}
+.lesson-btn.active .lesson-index { background:var(--accent); color:white; }
+.lesson-info strong { display:block; font-size:14px; }
+.lesson-info small { color:var(--muted); }
+.lesson-check { font-weight:700; color:var(--accent); }
+
+.workspace { min-width:0; }
+.lesson-head {
+  display:flex; justify-content:space-between; gap:20px; align-items:end;
+  margin-bottom:14px;
+}
+.lesson-head h2 { margin:6px 0; font-size:28px; }
+.lesson-head p { margin:0; color:var(--muted); }
+.tag {
+  display:inline-block; font-size:12px; font-weight:700; color:var(--accent);
+  background:var(--accent-soft); padding:5px 9px; border-radius:999px;
+}
+.lesson-score { color:var(--muted); font-weight:700; }
+
+.trainer-card { padding:24px; }
+.question-meta { display:flex; justify-content:space-between; align-items:center; color:var(--muted); font-size:13px; }
+.difficulty { background:#edf2f7; padding:4px 9px; border-radius:999px; color:#3d4a5c; }
+.trainer-card h3 { font-size:24px; margin:18px 0 6px; }
+.hint { color:var(--muted); min-height:24px; margin:0 0 18px; }
+
+.sheet {
+  border:1px solid #b9c2cc; border-radius:8px; overflow:hidden; background:white;
+  user-select:none;
+}
+.formula-row { display:grid; grid-template-columns:74px 38px 1fr; border-bottom:1px solid #c9d1da; background:#f3f5f7; min-height:34px; }
+.formula-row > div { display:flex; align-items:center; padding:6px 8px; border-right:1px solid #c9d1da; }
+.formula-row > div:last-child { border-right:none; }
+.name-box, .fx { justify-content:center; }
+.fx { font-style:italic; }
+.grid {
+  display:grid;
+  grid-template-columns:42px repeat(6, minmax(75px,1fr));
+  grid-auto-rows:38px;
+}
+.cell {
+  border-right:1px solid #d9dee5; border-bottom:1px solid #d9dee5;
+  padding:8px; font-size:13px; overflow:hidden; white-space:nowrap;
+}
+.header-cell { background:#f3f5f7; font-weight:600; text-align:center; padding:8px 4px; }
+.active-cell { outline:3px solid var(--accent); outline-offset:-2px; background:#f4fbf7; }
+.selected-range { background:#e8f3ed; }
+
+.key-area { text-align:center; padding:24px 0 6px; }
+.key-area > p { color:var(--muted); margin-top:0; }
+.pressed-keys { min-height:55px; display:flex; justify-content:center; align-items:center; gap:7px; flex-wrap:wrap; }
+.keycap {
+  min-width:46px; padding:10px 13px; border-radius:8px;
+  background:#1f2937; color:white; font-weight:700; box-shadow:0 3px 0 #0f172a;
+}
+.plus { color:var(--muted); font-weight:700; }
+.placeholder { color:#98a2b3; }
+.feedback {
+  margin:18px auto 0; max-width:620px; padding:12px 16px; border-radius:10px; font-weight:600;
+}
+.feedback.neutral { background:#f3f5f7; color:#475467; }
+.feedback.ok { background:var(--ok-bg); color:var(--ok); }
+.feedback.bad { background:var(--bad-bg); color:var(--bad); }
+.feedback.answer { background:var(--warn-bg); color:var(--warn); }
+
+.controls { display:flex; justify-content:flex-end; gap:10px; margin-top:22px; }
+.primary, .ghost {
+  border-radius:9px; padding:10px 15px; border:1px solid var(--line);
+}
+.primary { background:var(--accent); border-color:var(--accent); color:white; font-weight:700; }
+.primary:disabled { opacity:.45; cursor:not-allowed; }
+.ghost { background:white; color:#344054; }
+.text-btn { border:none; background:transparent; color:var(--accent); font-weight:700; }
+
+.reference { margin-top:18px; overflow:hidden; }
+.reference-head { display:flex; justify-content:space-between; align-items:center; padding:16px 18px; border-bottom:1px solid var(--line); }
+.reference-head h3 { margin:0; font-size:16px; }
+table { width:100%; border-collapse:collapse; }
+th, td { padding:12px 16px; border-bottom:1px solid var(--line); text-align:left; font-size:14px; }
+th { background:#f8fafc; }
+kbd {
+  background:#1f2937; color:white; border-radius:5px; padding:3px 7px;
+  font-family:inherit; font-weight:700; font-size:12px;
+}
+footer { max-width:1380px; margin:0 auto; padding:0 24px 30px; color:var(--muted); font-size:13px; }
+
+@media (max-width: 900px) {
+  .layout { grid-template-columns:1fr; }
+  .lesson-list { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+@media (max-width: 620px) {
+  .topbar { padding:14px 16px; align-items:flex-start; }
+  .layout { padding:14px; }
+  .lesson-list { grid-template-columns:1fr; }
+  .trainer-card { padding:16px; }
+  .grid { grid-template-columns:34px repeat(6, 78px); overflow:auto; }
+  .sheet { overflow:auto; }
+  .controls { flex-wrap:wrap; }
+}
+
+/* --- v2: Excel operation simulator --- */
+.excel-window { border:1px solid #aab4bf; border-radius:9px; overflow:hidden; background:#fff; box-shadow:0 8px 24px rgba(31,41,55,.10); user-select:none; }
+.excel-titlebar { min-height:34px; background:#107c41; color:#fff; display:flex; align-items:center; gap:10px; padding:5px 12px; font-size:13px; }
+.excel-app { width:24px; height:24px; display:grid; place-items:center; background:#0b6334; font-weight:800; border-radius:2px; }
+.save-state { margin-left:auto; opacity:.9; font-size:12px; }
+.excel-ribbon { min-height:35px; display:flex; align-items:end; gap:22px; padding:0 14px; border-bottom:1px solid #d8dee6; background:#fff; font-size:13px; overflow:auto; }
+.excel-ribbon span { padding:10px 0 7px; white-space:nowrap; }
+.excel-ribbon .active-tab { color:#107c41; border-bottom:2px solid #107c41; font-weight:700; }
+.mini-toolbar { min-height:40px; background:#f8fafc; border-bottom:1px solid #d8dee6; display:flex; align-items:center; gap:8px; padding:6px 12px; color:#344054; }
+.mini-toolbar button { width:29px; height:28px; border:1px solid transparent; background:transparent; border-radius:4px; }
+.mini-toolbar button.sim-on { background:#dcefe4; border-color:#9ac7aa; }
+.toolbar-sep { width:1px; height:24px; background:#d0d5dd; margin:0 4px; }
+.sheet-area { position:relative; overflow:auto; min-height:266px; background:white; }
+.grid { min-width:650px; }
+.cell { position:relative; transition:background .16s ease, font-weight .16s ease, transform .16s ease; }
+.cell.copied-cell::after { content:""; position:absolute; inset:-1px; border:2px dashed #107c41; animation:march .6s linear infinite; pointer-events:none; }
+.cell.cut-cell::after { content:""; position:absolute; inset:-1px; border:2px dashed #d97706; animation:march .6s linear infinite; pointer-events:none; }
+.cell.target-flash { animation:cellFlash .8s ease; }
+.cell.bold-cell { font-weight:800; }
+.cell.italic-cell { font-style:italic; }
+.cell.underline-cell { text-decoration:underline; }
+.cell.currency-cell::before { content:"￥"; }
+.cell.percent-cell::after { content:"%"; }
+.cell.number-format-cell { font-family:ui-monospace, SFMono-Regular, Menlo, monospace; }
+.cell.filter-header::after { content:"▼"; float:right; color:#667085; font-size:9px; margin-top:3px; }
+.cell.table-header { background:#107c41 !important; color:#fff; font-weight:700; }
+.cell.table-body:nth-child(even) { background:#eef8f2; }
+.cell.hyperlink-cell { color:#0563c1; text-decoration:underline; }
+.cell.editing-cell { box-shadow:inset 0 0 0 2px #107c41; background:#fffbe6; }
+.cell.range-edge { background:#e8f3ed; }
+.cell.whole-selected { background:#d9efe2 !important; }
+.cell.deleted { opacity:0; transform:scale(.7); }
+.cell.inserted { animation:insertRow .65s ease; background:#e6f4ea; }
+@keyframes march { 50% { border-style:dotted; } }
+@keyframes cellFlash { 0%,100%{background:#fff} 45%{background:#fff2a8} }
+@keyframes insertRow { from{opacity:0;transform:translateY(-12px)} to{opacity:1;transform:none} }
+.sheet-tabs { display:flex; align-items:center; gap:4px; padding:5px 9px; background:#f3f5f7; border-top:1px solid #d8dee6; }
+.sheet-tab,.sheet-add { border:none; background:transparent; padding:7px 12px; border-radius:5px; }
+.sheet-tab.active { background:#fff; color:#107c41; border-bottom:2px solid #107c41; font-weight:700; }
+.sheet-tab.new-sheet { animation:sheetPop .5s ease; }
+@keyframes sheetPop { from{opacity:0;transform:translateX(-12px)} to{opacity:1;transform:none} }
+.statusbar { min-height:27px; background:#f8fafc; border-top:1px solid #d8dee6; display:flex; justify-content:space-between; align-items:center; padding:4px 10px; font-size:12px; color:#667085; }
+.sim-toast { position:absolute; left:50%; bottom:18px; transform:translateX(-50%); background:#1f2937; color:#fff; padding:9px 14px; border-radius:8px; box-shadow:0 8px 22px rgba(0,0,0,.2); font-size:13px; z-index:20; max-width:90%; text-align:center; }
+.sim-toast.success { background:#107c41; }
+.sim-overlay { position:absolute; inset:0; z-index:15; display:grid; place-items:center; background:rgba(20,30,40,.22); padding:18px; }
+.sim-dialog { width:min(460px,92%); background:#fff; border-radius:7px; box-shadow:0 18px 45px rgba(0,0,0,.28); border:1px solid #b7c0cb; overflow:hidden; }
+.sim-dialog-title { padding:10px 13px; background:#f4f6f8; border-bottom:1px solid #d6dde5; font-weight:700; display:flex; justify-content:space-between; }
+.sim-dialog-body { padding:16px; font-size:13px; }
+.sim-field { height:34px; border:1px solid #aeb8c4; border-radius:4px; background:#fff; padding:7px 9px; margin:8px 0 12px; color:#344054; }
+.sim-dialog-actions { display:flex; justify-content:flex-end; gap:8px; margin-top:15px; }
+.sim-dialog-actions span { border:1px solid #aeb8c4; border-radius:4px; padding:6px 14px; background:#f8fafc; }
+.sim-dialog-actions .accent { background:#107c41; color:#fff; border-color:#107c41; }
+.print-preview { width:min(650px,95%); height:230px; background:#f2f4f7; border-radius:8px; display:grid; grid-template-columns:180px 1fr; box-shadow:0 16px 40px rgba(0,0,0,.25); overflow:hidden; }
+.print-sidebar { background:#fff; padding:16px; }
+.print-paper { margin:18px; background:#fff; box-shadow:0 3px 12px rgba(0,0,0,.15); padding:22px; font-size:12px; }
+.new-workbook { background:#f8fafc; width:min(700px,95%); padding:24px; border-radius:9px; box-shadow:0 15px 42px rgba(0,0,0,.25); }
+.new-workbook h4 { margin:0 0 14px; }
+.blank-book-card { width:150px; height:110px; border:1px solid #cbd5e1; background:#fff; display:grid; place-items:center; color:#107c41; font-weight:700; }
+.open-panel { width:min(660px,95%); background:#fff; border-radius:8px; overflow:hidden; box-shadow:0 15px 42px rgba(0,0,0,.25); }
+.open-panel h4 { margin:0; padding:14px 18px; background:#107c41; color:#fff; }
+.file-row { display:flex; justify-content:space-between; padding:12px 18px; border-bottom:1px solid #e4e7ec; }
+
+@media (max-width:620px){
+  .excel-ribbon{gap:14px}.mini-toolbar{overflow:auto}.sheet-area{min-height:230px}.print-preview{grid-template-columns:120px 1fr}
+}
+
+
+/* --- v3: user-controlled cell/range selection --- */
+.cell:not(.header-cell) { cursor: cell; }
+.cell.user-selected { background:#dcefe4; }
+.cell.user-selected.active-cell { background:#cce8d7; }
+.feedback.ready { border:1px solid #9ac7aa; background:#f0faf4; color:#146c3a; }
+.sheet-area { cursor: default; }
+
+/* --- v4: stable mouse/pointer selection --- */
+.grid { user-select:none; -webkit-user-select:none; }
+.cell { touch-action:none; }
+.cell:not(.header-cell):hover { background:#edf8f1; }
+.cell.user-selected { background:#dcefe4 !important; box-shadow: inset 0 0 0 1px rgba(16,124,65,.18); }
+.cell.user-selected.active-cell { background:#cce8d7 !important; outline:3px solid var(--accent); outline-offset:-2px; }
+
+
+/* --- v5: hidden overlay fix + white worksheet cells --- */
+/* Author CSS can override the browser's built-in [hidden] behavior.
+   Force simulator overlays/toasts to truly disappear when hidden. */
+.sim-overlay[hidden],
+.sim-toast[hidden] {
+  display: none !important;
+}
+
+/* Excel worksheet body cells are white.
+   Only row/column headers remain gray. */
+.grid .cell:not(.header-cell) {
+  background: #ffffff;
+}
+
+/* Keep selection feedback visible on top of the white cells. */
+.grid .cell.user-selected {
+  background: #dcefe4 !important;
+}
+
+.grid .cell.user-selected.active-cell {
+  background: #cce8d7 !important;
+}
+
+/* A normal active cell should stay white with Excel's green border. */
+.grid .cell.active-cell:not(.user-selected) {
+  background: #ffffff;
+}
+
+/* Hover indication is intentionally subtle and only applies when not selected. */
+.grid .cell:not(.header-cell):not(.user-selected):hover {
+  background: #f7fbf8;
+}
+
+
+/* --- v6: current-input reset button --- */
+.reset-input {
+  border-color: #b9c7bd;
+  background: #f6fbf8;
+  color: #17633b;
+  font-weight: 700;
+}
+.reset-input:hover {
+  background: #eaf5ee;
+  border-color: #7fa68c;
+}
+
+
+/* --- v7: browser shortcut practice mode --- */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.practice-mode-btn {
+  border: 1px solid #0f6f3d;
+  background: #107c41;
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 9px;
+  font-weight: 700;
+}
+.practice-mode-btn:hover {
+  background: #0b6334;
+}
+.practice-mode-btn.active {
+  background: #084d2a;
+  box-shadow: inset 0 0 0 2px rgba(255,255,255,.18);
+}
+.practice-mode-status {
+  min-width: 42px;
+  text-align: center;
+  border-radius: 999px;
+  padding: 5px 9px;
+  font-size: 12px;
+  font-weight: 800;
+  border: 1px solid #d0d5dd;
+}
+.practice-mode-status.off {
+  background: #f2f4f7;
+  color: #667085;
+}
+.practice-mode-status.partial {
+  background: #fff4d6;
+  color: #8a5a00;
+  border-color: #efcf77;
+}
+.practice-mode-status.on {
+  background: #e6f4ea;
+  color: #137333;
+  border-color: #9ac7aa;
+}
+.keyboard-notice {
+  max-width: 760px;
+  margin: 12px auto 0;
+  padding: 9px 12px;
+  border: 1px solid #d8dee6;
+  border-radius: 8px;
+  background: #f8fafc;
+  color: #667085;
+  font-size: 12px;
+  line-height: 1.55;
+}
+body.practice-mode-active .trainer-card {
+  box-shadow: 0 0 0 2px rgba(16,124,65,.18), var(--shadow);
+}
+
+
+/* --- v9: 5 rounds + completion capture screen --- */
+.round-chip {
+  border: 1px solid #bfd7c8;
+  background: #edf7f1;
+  color: #17633b;
+  border-radius: 999px;
+  padding: 8px 12px;
+  white-space: nowrap;
+  font-size: 13px;
+}
+.round-chip strong {
+  margin-left: 4px;
+  font-size: 15px;
+}
+
+.completion-screen[hidden] {
+  display: none !important;
+}
+.completion-screen {
+  min-height: calc(100vh - 120px);
+  display: grid;
+  place-items: center;
+  padding: 34px 20px 48px;
+  background: var(--bg);
+}
+.completion-card {
+  width: min(820px, 100%);
+  background: #ffffff;
+  border: 1px solid #d7e4dc;
+  border-radius: 22px;
+  box-shadow: 0 18px 50px rgba(31, 41, 55, .12);
+  padding: 44px 46px 38px;
+  text-align: center;
+  color: #18212f;
+}
+.completion-badge {
+  display: inline-block;
+  background: #e8f3ed;
+  color: #17633b;
+  border: 1px solid #b9d7c4;
+  border-radius: 999px;
+  padding: 7px 14px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: .02em;
+}
+.completion-icon {
+  width: 82px;
+  height: 82px;
+  margin: 22px auto 16px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #217346;
+  color: #ffffff;
+  font-size: 48px;
+  line-height: 1;
+  font-weight: 900;
+  box-shadow: 0 10px 24px rgba(33, 115, 70, .22);
+}
+.completion-card h2 {
+  margin: 0 0 18px;
+  font-size: 30px;
+  line-height: 1.35;
+}
+.completion-message {
+  max-width: 680px;
+  margin: 0 auto;
+  color: #475467;
+  line-height: 1.9;
+  font-size: 16px;
+  font-weight: 600;
+}
+.completion-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 28px 0 16px;
+}
+.completion-summary > div {
+  background: #f7faf8;
+  border: 1px solid #e0e9e3;
+  border-radius: 14px;
+  padding: 16px 12px;
+}
+.completion-summary span,
+.completion-summary strong {
+  display: block;
+}
+.completion-summary span {
+  color: #667085;
+  font-size: 12px;
+  margin-bottom: 5px;
+}
+.completion-summary strong {
+  color: #17633b;
+  font-size: 20px;
+}
+.completion-meta {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  align-items: baseline;
+  margin: 18px 0 24px;
+  color: #667085;
+  font-size: 13px;
+}
+.completion-meta strong {
+  color: #344054;
+}
+.capture-btn {
+  border: 1px solid #17633b;
+  background: #217346;
+  color: #ffffff;
+  border-radius: 10px;
+  padding: 13px 24px;
+  font-size: 16px;
+  font-weight: 800;
+  cursor: pointer;
+}
+.capture-btn:hover {
+  background: #185d39;
+}
+.capture-btn:disabled {
+  opacity: .65;
+  cursor: wait;
+}
+.capture-status {
+  min-height: 20px;
+  margin: 12px 0 0;
+  color: #667085;
+  font-size: 12px;
+}
+.capture-status.success {
+  color: #137333;
+  font-weight: 700;
+}
+.capture-status.error {
+  color: #b3261e;
+  font-weight: 700;
+}
+
+@media (max-width: 650px) {
+  .completion-card {
+    padding: 30px 20px;
+  }
+  .completion-summary {
+    grid-template-columns: 1fr;
+  }
+  .completion-card h2 {
+    font-size: 24px;
+  }
+}
+
+
+/* --- v10: row selection for insert/delete practice --- */
+.grid .cell.header-cell.row-header-selected {
+  background: #dcefe4 !important;
+  color: #17633b;
+  font-weight: 800;
+  outline: 2px solid #217346;
+  outline-offset: -2px;
+}
+
+
+/* --- v11: real-looking editing caret in Lesson 2 --- */
+.cell.editing-cell {
+  box-shadow: inset 0 0 0 2px #107c41;
+  background: #fffbe6 !important;
+  white-space: pre-wrap;
+}
+
+.cell-edit-caret {
+  display: inline-block;
+  width: 2px;
+  height: 1.15em;
+  margin: 0 1px;
+  background: #111827;
+  vertical-align: -0.18em;
+  animation: excelCaretBlink 0.9s steps(1, end) infinite;
+  pointer-events: none;
+}
+
+@keyframes excelCaretBlink {
+  0%, 46% { opacity: 1; }
+  47%, 100% { opacity: 0; }
+}
+
+
+/* --- v13: correct-answer interaction lock --- */
+.controls button:disabled,
+.header-actions button:disabled,
+.lesson-btn:disabled {
+  opacity: .42;
+  cursor: not-allowed;
+}
+#skipBtn:disabled {
+  background: #f2f4f7;
+  color: #98a2b3;
+  border-color: #e4e7ec;
+}
+
+
+/* --- v14: round completion overlay / random rounds --- */
+.round-complete-overlay[hidden] {
+  display: none !important;
+}
+.round-complete-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(24, 33, 47, .48);
+  backdrop-filter: blur(3px);
+}
+.round-complete-card {
+  width: min(520px, 94vw);
+  padding: 36px 34px 32px;
+  border-radius: 20px;
+  background: #fff;
+  border: 1px solid #dce3ec;
+  box-shadow: 0 22px 60px rgba(0,0,0,.18);
+  text-align: center;
+}
+.round-complete-icon {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 18px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #217346;
+  color: #fff;
+  font-size: 42px;
+  font-weight: 900;
+}
+.round-complete-card h2 {
+  margin: 0 0 12px;
+  font-size: 30px;
+}
+.round-complete-card p {
+  margin: 0 auto 24px;
+  color: #667085;
+  line-height: 1.7;
+}
+.round-continue-btn {
+  min-width: 180px;
+}
+.random-mode-note {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #fff4d6;
+  color: #8a5a00;
+  font-size: 13px;
+  font-weight: 700;
+}
+.lesson-btn.random-only {
+  grid-template-columns: 40px 1fr;
+  cursor: default;
+  border-color: #d5b75e;
+  background: #fff9e8;
+}
+.lesson-btn.random-only .lesson-index {
+  background: #8a5a00;
+  color: #fff;
+}
+
+
+/* --- v17: final completion message --- */
+.final-completion-message {
+  display: block !important;
+  max-width: 720px;
+  margin: 20px auto 28px;
+  padding: 22px 24px;
+  border: 2px solid #217346;
+  border-radius: 16px;
+  background: #eef8f2;
+  color: #18212f;
+  text-align: center;
+  line-height: 1.9;
+  font-size: 17px;
+  font-weight: 600;
+}
+.final-completion-message .final-title {
+  display: block;
+  margin-bottom: 12px;
+  color: #17633b;
+  font-size: 30px;
+  line-height: 1.35;
+  font-weight: 900;
+}
+.final-completion-message .final-body {
+  display: block;
+}

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Excel ショートカット練習 | GitHub Pages</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>Excel ショートカット練習</h1>
+      <p>キーを押すと、Excel風画面が実際の操作に合わせて変化します</p>
+    </div>
+    <div class="header-actions">
+      <div class="round-chip">練習 <strong id="roundText">1 / 5</strong></div>
+      <button id="practiceModeBtn" class="practice-mode-btn" type="button">ショートカット練習モード</button>
+      <span id="practiceModeStatus" class="practice-mode-status off">OFF</span>
+      <button id="resetBtn" class="ghost">進捗をリセット</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <aside class="sidebar">
+      <section class="progress-card">
+        <div class="progress-row"><span>総合進捗</span><strong id="overallText">0%</strong></div>
+        <div class="progress-track"><div id="overallBar" class="progress-bar"></div></div>
+        <div class="stats">
+          <div><strong id="correctTotal">0</strong><span>正解</span></div>
+          <div><strong id="attemptTotal">0</strong><span>回答</span></div>
+          <div><strong id="accuracyTotal">0%</strong><span>正答率</span></div>
+        </div>
+      </section>
+      <nav id="lessonList" class="lesson-list"></nav>
+    </aside>
+
+    <section class="workspace">
+      <div class="lesson-head">
+        <div>
+          <div id="lessonTag" class="tag">Lesson 1</div>
+          <h2 id="lessonTitle">基本操作</h2>
+          <p id="lessonDescription"></p>
+        </div>
+        <div class="lesson-score"><span id="lessonProgressText">0 / 0</span></div>
+      </div>
+
+      <section class="trainer-card">
+        <div class="question-meta">
+          <span id="questionNo">問題 1</span>
+          <span id="difficulty" class="difficulty">必須</span>
+        </div>
+        <h3 id="actionText">コピーしてください</h3>
+        <p id="hintText" class="hint"></p>
+
+        <div class="excel-window" id="excelWindow">
+          <div class="excel-titlebar">
+            <span class="excel-app">X</span>
+            <span id="workbookTitle">売上管理.xlsx - Excel</span>
+            <span id="saveState" class="save-state">保存済み</span>
+          </div>
+          <div class="excel-ribbon">
+            <span>ファイル</span><span class="active-tab">ホーム</span><span>挿入</span><span>ページ レイアウト</span><span>数式</span><span>データ</span><span>表示</span>
+          </div>
+          <div class="mini-toolbar">
+            <button type="button" id="fakeBold">B</button><button type="button"><i>I</i></button><button type="button"><u>U</u></button>
+            <span class="toolbar-sep"></span><span>標準</span><span>▼</span><span class="toolbar-sep"></span><span>Σ</span>
+          </div>
+          <div class="formula-row">
+            <div class="name-box" id="nameBox">B3</div>
+            <div class="fx">fx</div>
+            <div class="formula-box" id="formulaValue">120</div>
+          </div>
+          <div class="sheet-area">
+            <div id="grid" class="grid"></div>
+            <div id="simOverlay" class="sim-overlay" hidden></div>
+            <div id="simToast" class="sim-toast" hidden></div>
+          </div>
+          <div class="sheet-tabs" id="sheetTabs">
+            <button class="sheet-add" type="button">＋</button>
+            <button class="sheet-tab active" type="button">Sheet1</button>
+            <button class="sheet-tab" type="button">Sheet2</button>
+            <button class="sheet-tab" type="button">集計</button>
+          </div>
+          <div class="statusbar"><span id="statusText">準備完了</span><span>100%</span></div>
+        </div>
+
+        <div class="key-area">
+          <p>キーボードでショートカットを入力してください</p>
+          <div id="pressedKeys" class="pressed-keys"><span class="placeholder">キー入力待ち</span></div>
+          <div id="feedback" class="feedback neutral">問題文を確認してキーを入力してください。</div>
+          <div id="keyboardNotice" class="keyboard-notice">
+            ブラウザ予約キー（Ctrl+T など）は「ショートカット練習モード」をONにすると捕捉しやすくなります。
+          </div>
+        </div>
+
+        <div class="controls">
+          <button id="inputResetBtn" class="ghost reset-input">入力をリセット</button>
+          <button id="retryVisualBtn" class="ghost" disabled>動きをもう一度見る</button>
+          <button id="skipBtn" class="ghost">スキップ</button>
+          <button id="nextBtn" class="primary" disabled>次の問題</button>
+        </div>
+      </section>
+    </section>
+  </main>
+
+
+
+  <section id="roundCompleteOverlay" class="round-complete-overlay" hidden>
+    <div class="round-complete-card">
+      <div class="round-complete-icon">✓</div>
+      <h2 id="roundCompleteTitle">1回終わりました！</h2>
+      <p id="roundCompleteMessage">次の練習へ進んでください。</p>
+      <button id="roundContinueBtn" class="primary round-continue-btn" type="button">次の練習へ</button>
+    </div>
+  </section>
+
+  <section id="completionScreen" class="completion-screen" hidden>
+    <div id="completionCaptureArea" class="completion-card">
+      <div class="completion-badge">5 / 5 回 完了</div>
+      <div class="completion-icon">✓</div>
+      <div id="finalCompletionMessage" class="final-completion-message" role="status" aria-live="polite">
+        <span class="final-title">5回終わりました！</span>
+        <span class="final-body">
+          5回の練習がすべて終了しました。下の画面キャプチャーボタンを押し、<br>
+          「ダウンロード」に保存されたキャプチャー画面をTeamsの課題に提出してお帰りください！
+        </span>
+      </div>
+
+      <div class="completion-summary">
+        <div><span>練習回数</span><strong>5 / 5 回</strong></div>
+        <div><span>必須ショートカット</span><strong id="completionCount">0 / 0</strong></div>
+        <div><span>総合進捗</span><strong>100%</strong></div>
+      </div>
+
+      <div class="completion-meta">
+        <span>完了日時</span>
+        <strong id="completionDate">-</strong>
+      </div>
+
+      <button id="captureBtn" class="capture-btn" type="button">画面キャプチャー</button>
+      <p id="captureStatus" class="capture-status">
+        ボタンを押すと、提出用のキャプチャー画面をPNGで「ダウンロード」に保存します。
+      </p>
+    </div>
+  </section>
+
+  <footer><p>GitHub Pages版 / Windows版 Excel を想定した学習用シミュレーターです。Ctrl+Tなどのブラウザ予約キーは「ショートカット練習モード」をONにして練習してください。</p></footer>
+  <script src="app.js"></script>
+</body>
+</html>
